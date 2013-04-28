@@ -1001,8 +1001,7 @@ class Automation {
 					}
 				}
 		}
-		header("Location: build.php?gid=17");
-	} else {}
+	}
 	}
     
     private function sendunitsComplete() {
