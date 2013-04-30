@@ -4,7 +4,7 @@ include("GameEngine/Village.php");
 include "Templates/html.tpl";
 ?>
 <body class="v35 webkit chrome plus">
-  <div id="wrapper">
+	<div id="wrapper">
 		<img id="staticElements" src="img/x.gif" alt="" />
 		<div id="logoutContainer">
 			<a id="logout" href="logout.php" title="<?php echo LOGOUT; ?>">&nbsp;</a>
@@ -28,9 +28,9 @@ include "Templates/html.tpl";
 							<a class="" href="statistiken.php" accesskey="4" title="<?php echo HEADER_STATS; ?>"></a>
 						</li>
 <?php
-if(count($database->getMessage($session->uid)) >= 1000) {
+if(count($database->getMessage($session->uid,9)) >= 1000) {
 	$unmsg = "+1000";
-} else { $unmsg = count($database->getMessage($session->uid)); }
+} else { $unmsg = count($database->getMessage($session->uid,9)); }
 
 if(count($database->getNotice5($session->uid)) >= 1000) {
 	$unnotice = "+1000";
@@ -48,7 +48,7 @@ if($message->nunread){
 ?>
 </li>
 <li id="n6" class="messages">
-<a href="nachrichten.php" accesskey="6" title="<?php echo HEADER_MESSAGES; ?><?php if($message->unread){ echo' ('.count($database->getMessage($session->uid)).')'; } ?>"></a>
+<a href="nachrichten.php" accesskey="6" title="<?php echo HEADER_MESSAGES; ?><?php if($message->unread){ echo' ('.count($database->getMessage($session->uid,9)).')'; } ?>"></a>
 <?php
 if($message->unread) {
 	echo "<div class=\"ltr bubble\" title=\"".$unmsg." ".HEADER_MESSAGES_NEW."\" style=\"display:block\">
@@ -72,36 +72,36 @@ if($message->unread) {
 						<div id="contentOuterContainer">
 							<div class="contentTitle">&nbsp;</div>
 							<div class="contentContainer">
-								<div id="content" class="universal"><h1 class="titleInHeader">Système d'Aide</h1>
+								<div id="content" class="universal"><h1 class="titleInHeader"><?php echo $lang['HELP1']['TITRE']; ?></h1>
 
 <div class="helpInfoBlock">
-	<a target="_blank" href="http://t4.answers.travian.fr/" class="helpHeadLine">FAQ - Answers</a>
-	<a target="_blank" href="http://t4.answers.travian.fr/" class="helpText">Ici, vous trouverez la réponse à votre question sur Travian. Si celle ci ne vous satisfait pas ou vous parait incomplète ou s'il vous manque toujours des élements, vous pourrez contacter le support de jeu.</a>
+	<a target="_blank" href="http://t4.answers.travian.fr/" class="helpHeadLine"><?php echo $lang['HELP1']['Partie_1']; ?></a>
+	<a target="_blank" href="http://t4.answers.travian.fr/" class="helpText"><?php echo $lang['HELP1']['Text_1']; ?></a>
 </div>
 
 <div class="helpInfoBlock">
-	<a target="_blank" href="http://www.travian.fr/spielregeln.php" class="helpHeadLine">Règles du jeu.</a>
-	<a target="_blank" href="http://www.travian.fr/spielregeln.php" class="helpText">Règles du jeu</a>
+	<a target="_blank" href="http://www.travian.fr/spielregeln.php" class="helpHeadLine"><?php echo $lang['HELP1']['Partie_2']; ?></a>
+	<a target="_blank" href="http://www.travian.fr/spielregeln.php" class="helpText"><?php echo $lang['HELP1']['Text_2']; ?></a>
 </div>
 
 <div class="helpInfoBlock">
-	<a href="help.php?page=support" class="helpHeadLine">Contacter le support de jeu</a>
-	<a href="help.php?page=support" class="helpText">Si vous n'avez pas trouvé votre réponse : contactez le support de jeu ici.</a>
+	<a href="help.php?page=support" class="helpHeadLine"><?php echo $lang['HELP1']['Partie_3']; ?></a>
+	<a href="help.php?page=support" class="helpText"><?php echo $lang['HELP1']['Text_3']; ?></a>
 </div>
 
 <div class="helpInfoBlock">
-	<a href="plus.php?id=8" class="helpHeadLine">Questions Plus</a>
-	<a href="plus.php?id=8" class="helpText">Ici, vous pouvez poser votre question à propos des options Plus ou des systèmes de paiement.</a>
+	<a href="plus.php?id=8" class="helpHeadLine"><?php echo $lang['HELP1']['Partie_4']; ?></a>
+	<a href="plus.php?id=8" class="helpText"><?php echo $lang['HELP1']['Text_4']; ?></a>
 </div>
 
 <div class="helpInfoBlock">
-	<a target="_blank" href="http://forum.travian.fr" class="helpHeadLine">Forum</a>
-	<a target="_blank" href="http://forum.travian.fr" class="helpText">Sur le forum, discutez avec les autres joueurs.</a>
+	<a target="_blank" href="http://forum.travian.fr" class="helpHeadLine"><?php echo $lang['HELP1']['Partie_5']; ?></a>
+	<a target="_blank" href="http://forum.travian.fr" class="helpText"><?php echo $lang['HELP1']['Text_5']; ?></a>
 </div>
 
 <div class="helpInfoBlock">
-	<a href="#" class="helpHeadLine" onclick="return Travian.Game.iPopup(0,0);">Information rapide</a>
-	<a href="#" onclick="return Travian.Game.iPopup(0,0);" class="helpText">Ici vous pouvez trouver des informations courtes et rapides sur les troupes et les bâtiments de Travian</a>
+	<a href="#" class="helpHeadLine" onclick="return Travian.Game.iPopup(0,0);"><?php echo $lang['HELP1']['Partie_6']; ?></a>
+	<a href="#" onclick="return Travian.Game.iPopup(0,0);" class="helpText"><?php echo $lang['HELP1']['Text_6']; ?></a>
 </div>
 <div class="clear"></div>
 </div>
@@ -121,3 +121,4 @@ include("Templates/quest.tpl");
 </div>
 </body>
 </html>
+
