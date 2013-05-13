@@ -142,7 +142,7 @@ class Technology {
 		$listArray = array();
 		if($unitarray['hero'] != 0 && $unitarray['hero'] != "") {
                 $holder['id'] = "hero";
-                $holder['name'] = $this->unarray[$i];
+                $holder['name'] = $this->unarray[$i+1];
                 $holder['amt'] = $unitarray['hero'];
                 array_push($listArray,$holder);
         }

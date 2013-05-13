@@ -106,7 +106,7 @@ if($units_walking >= 1){
 					echo "<td><img src=\"img/x.gif\" class=\"unit u$i\" title=\"".$technology->getUnitName($i)."\" /></td>";	
 				}
                 if($enforce['hero'] > 0){
-                echo "<td><img src=\"img/x.gif\" class=\"unit uhero\" title=\"".$technology->getUnitName(51)."\" /></td>";
+                echo "<td><img src=\"img/x.gif\" class=\"unit uhero\" title=\"".$technology->getUnitName(52)."\" /></td>";
                 }
 				echo "</tr><tr><th>Troops</th>";
 				for($i=$start;$i<=($start+9);$i++) {
@@ -184,7 +184,7 @@ if($units_walking >= 1){
                   	echo "<td><img src=\"img/x.gif\" class=\"unit u$i\" title=\"".$technology->getUnitName($i)."\" alt=\"".$technology->getUnitName($i)."\" /></td>";	
                   }
                   if($enforce['hero'] > 0){
-                	echo "<td><img src=\"img/x.gif\" class=\"unit uhero\" title=\"".$technology->getUnitName(51)."\" /></td>";
+                	echo "<td><img src=\"img/x.gif\" class=\"unit uhero\" title=\"".$technology->getUnitName(52)."\" /></td>";
                   }
                   echo "</tr><tr><th>Troops</th>";
                   for($i=$start;$i<=($start+9);$i++) {

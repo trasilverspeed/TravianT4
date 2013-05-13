@@ -9,9 +9,11 @@
 
         	function register($username, $password, $email, $tribe, $locate, $act) {
         		$time = time();
+				if(strtotime(START_TIME) > time()){
+				$time = strtotime(START_TIME);
+				}
         		$timep = ($time + PROTECTION);
-				$rand = rand(8900, 9000);
-        		$q = "INSERT INTO " . TB_PREFIX . "users (username,password,access,email,timestamp,tribe,location,act,protect,fquest,clp,cp) VALUES ('$username', '$password', " . USER . ", '$email', $time, $tribe, $locate, '$act', $timep, '0,0,0,0,0,0,0,0,0,0,0', '$rand', 1)";
+        		$q = "INSERT INTO " . TB_PREFIX . "users (username,password,access,email,timestamp,tribe,location,act,protect,fquest,cp) VALUES ('$username', '$password', " . USER . ", '$email', $time, $tribe, $locate, '$act', $timep, '0,0,0,0,0,0,0,0,0,0,0', 1)";
         		if(mysql_query($q, $this->connection)) {
         			return mysql_insert_id($this->connection);
         		} else {

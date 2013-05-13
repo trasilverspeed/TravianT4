@@ -111,7 +111,7 @@ class Automation {
 		$this->procClimbers();
         $this->ClearUser();
         $this->ClearInactive();
-		$this->oasisResoucesProduce();
+		$this->oasisResourcesProduce();
         $this->pruneResource();
 		$this->pruneOResource();
 		$this->addAdventures();
@@ -470,32 +470,6 @@ class Automation {
 		$maxcrop = $getoasis['maxcrop'];
 		}
 		$q = "UPDATE " . TB_PREFIX . "odata set maxstore = $maxstore, maxcrop = $maxcrop where wref = ".$getoasis['wref']."";
-		$database->query($q);
-		}
-        $q = "SELECT * FROM ".TB_PREFIX."odata WHERE wood > maxstore OR clay > maxstore OR iron > maxstore OR crop > maxcrop";
-        $array = $database->query_return($q);
-	    foreach($array as $getoasis) {
-		if($getoasis['wood'] > $getoasis['maxstore']){
-		$wood = $getoasis['maxstore'];
-		}else{
-		$wood = $getoasis['wood'];
-		}
-		if($getoasis['clay'] > $getoasis['maxstore']){
-		$clay = $getoasis['maxstore'];
-		}else{
-		$clay = $getoasis['clay'];
-		}
-		if($getoasis['iron'] > $getoasis['maxstore']){
-		$iron = $getoasis['maxstore'];
-		}else{
-		$iron = $getoasis['iron'];
-		}
-		if($getoasis['crop'] > $getoasis['maxstore']){
-		$crop = $getoasis['maxstore'];
-		}else{
-		$crop = $getoasis['crop'];
-		}
-		$q = "UPDATE " . TB_PREFIX . "odata set wood = $wood, clay = $clay, iron = $iron, crop = $crop where wref = ".$getoasis['wref']."";
 		$database->query($q);
 		}
 		$q = "SELECT * FROM ".TB_PREFIX."odata WHERE wood < 0 OR clay < 0 OR iron < 0 OR crop < 0";
@@ -4325,17 +4299,30 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 		}
 	}
 	
-	private function oasisResoucesProduce() {
+	private function oasisResourcesProduce() {
 		global $database;
 		$time = time();
 		$q = "SELECT * FROM ".TB_PREFIX."odata WHERE wood < 800 OR clay < 800 OR iron < 800 OR crop < 800";
 		$array = $database->query_return($q);
 		foreach($array as $getoasis) {
-		$oasiswood = (8*SPEED/3600)*(time()-$getoasis['lastupdated']);
-		$oasisclay = (8*SPEED/3600)*(time()-$getoasis['lastupdated']);
-		$oasisiron = (8*SPEED/3600)*(time()-$getoasis['lastupdated']);
-		$oasiscrop = (8*SPEED/3600)*(time()-$getoasis['lastupdated']);
-		$database->modifyOasisResource($getoasis['wref'],$oasiswood,$oasisclay,$oasisiron,$oasiscrop,1);
+		$oasiswood = $getoasis['wood'] + (8*SPEED/3600)*(time()-$getoasis['lastupdated']);
+		$oasisclay = $getoasis['clay'] + (8*SPEED/3600)*(time()-$getoasis['lastupdated']);
+		$oasisiron = $getoasis['iron'] + (8*SPEED/3600)*(time()-$getoasis['lastupdated']);
+		$oasiscrop = $getoasis['crop'] + (8*SPEED/3600)*(time()-$getoasis['lastupdated']);
+		if($oasiswood > $getoasis['maxstore']){
+		$oasiswood = $getoasis['maxstore'];
+		}
+		if($oasisclay > $getoasis['maxstore']){
+		$oasisclay = $getoasis['maxstore'];
+		}
+		if($oasisiron > $getoasis['maxstore']){
+		$oasisiron = $getoasis['maxstore'];
+		}
+		if($oasiscrop > $getoasis['maxcrop']){
+		$oasiscrop = $getoasis['maxcrop'];
+		}
+		$q = "UPDATE " . TB_PREFIX . "odata set wood = $oasiswood, clay = $oasisclay, iron = $oasisiron, crop = $oasiscrop where wref = ".$getoasis['wref']."";
+		$database->query($q);
 		$database->updateOasis($getoasis['wref']);
 		}
 	}
@@ -4347,7 +4334,7 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 			global $database, $ranking;
 					$users = "SELECT * FROM " . TB_PREFIX . "users WHERE access < " . (INCLUDE_ADMIN ? "10" : "8") . "";
 					$array = $database->query_return($users);
-					$ranking->procUsersRanking();
+					$climbers = $ranking->procUsersRanking();
 					if(mysql_num_rows(mysql_query($users)) > 0){
 					$q = "SELECT * FROM ".TB_PREFIX."medal order by week DESC LIMIT 0, 1";
 					$result = mysql_query($q);
@@ -4357,26 +4344,26 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 					} else {
 						$week='1';
 					}
-					foreach($array as $session){
-					$oldrank = $ranking->getUserRank($session['id']);
-					if($session['oldrank'] == 0){
-					$database->updateoldrank($session['id'], $oldrank);
+					while($row = mysql_fetch_array($climbers)){
+					$oldrank = $ranking->getUserRank($row['userid']);
+					if($row['oldrank'] == 0){
+					$database->updateoldrank($row['userid'], $oldrank);
 					}else{
 					if($week > 1){
-					if($session['oldrank'] > $oldrank) {
-						$totalpoints = $session['oldrank'] - $oldrank;
-						$database->addclimberrankpop($session['id'], $totalpoints);
-						$database->updateoldrank($session['id'], $oldrank);
+					if($row['oldrank'] > $oldrank) {
+						$totalpoints = $row['oldrank'] - $oldrank;
+						$database->addclimberrankpop($row['userid'], $totalpoints);
+						$database->updateoldrank($row['userid'], $oldrank);
 					} else
-						if($session['oldrank'] < $oldrank) {
-							$totalpoints = $oldrank - $session['oldrank'];
-							$database->removeclimberrankpop($session['id'], $totalpoints);
-							$database->updateoldrank($session['id'], $oldrank);
+						if($row['oldrank'] < $oldrank) {
+							$totalpoints = $oldrank - $row['oldrank'];
+							$database->removeclimberrankpop($row['userid'], $totalpoints);
+							$database->updateoldrank($row['userid'], $oldrank);
 						}
 					}else{
 						$totalpoints = mysql_num_rows(mysql_query($users)) - $oldrank;
-						$database->setclimberrankpop($session['id'], $totalpoints+1);
-						$database->updateoldrank($session['id'], $oldrank);
+						$database->setclimberrankpop($row['userid'], $totalpoints+1);
+						$database->updateoldrank($row['userid'], $oldrank);
 					}
 					}
 					}

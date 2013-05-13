@@ -10,7 +10,7 @@
 				)totalpop
 				
 				FROM " . TB_PREFIX . "users
-				WHERE " . TB_PREFIX . "users.id != 0 and id != 2 and id != 3
+				WHERE " . TB_PREFIX . "users.id > 4
 				ORDER BY totalpop DESC, userid DESC";
 				$result = mysql_query($q);
 				$i = 1;
@@ -27,7 +27,7 @@
 			public function getUserAttRank($uid) {
 				$q = "SELECT " . TB_PREFIX . "users.id userid, " . TB_PREFIX . "users.username username, " . TB_PREFIX . "users.apall apall
 				FROM " . TB_PREFIX . "users
-				WHERE " . TB_PREFIX . "users.id > 3
+				WHERE " . TB_PREFIX . "users.id > 4
 				ORDER BY apall DESC, userid DESC";
 					
 				$result = mysql_query($q);
@@ -45,7 +45,7 @@
 			public function getUserDefRank($uid) {
 				$q = "SELECT " . TB_PREFIX . "users.id userid, " . TB_PREFIX . "users.username username, " . TB_PREFIX . "users.dpall dpall
 				FROM " . TB_PREFIX . "users
-				WHERE " . TB_PREFIX . "users.id > 3
+				WHERE " . TB_PREFIX . "users.id > 4
 				ORDER BY dpall DESC, userid DESC";
 					
 				$result = mysql_query($q);
@@ -124,7 +124,7 @@
 			
 			
 			public function procUsersRanking($limit="") {
-				$q = "SELECT " . TB_PREFIX . "users.id userid, " . TB_PREFIX . "users.username username," . TB_PREFIX . "users.alliance alliance, (
+				$q = "SELECT " . TB_PREFIX . "users.id userid, " . TB_PREFIX . "users.username username, " . TB_PREFIX . "users.oldrank oldrank, " . TB_PREFIX . "users.alliance alliance, (
 				SELECT SUM( " . TB_PREFIX . "vdata.pop ) 
 				FROM " . TB_PREFIX . "vdata
 				WHERE " . TB_PREFIX . "vdata.owner = userid
@@ -147,7 +147,7 @@
 				)allitag
 					
 				FROM " . TB_PREFIX . "users
-				WHERE " . TB_PREFIX . "users.id !=4 AND id !=2 AND id !=3
+				WHERE " . TB_PREFIX . "users.id > 4
 				ORDER BY totalpop DESC, totalraid DESC, userid DESC $limit";
 				return mysql_query($q);
 			}
