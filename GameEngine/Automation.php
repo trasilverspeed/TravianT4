@@ -4422,8 +4422,9 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 
 	private function procClimbers($uid) {
 			global $database, $ranking;
+					$users = "SELECT * FROM " . TB_PREFIX . "users WHERE access < " . (INCLUDE_ADMIN ? "10" : "8") . "";
 					$climber = $database->getUserArray($uid,1);
-					if(count($ranking->getRank()) > 0){
+					if(mysql_num_rows(mysql_query($users)) > 0){
 					$q = "SELECT * FROM ".TB_PREFIX."medal order by week DESC LIMIT 0, 1";
 					$result = mysql_query($q);
 					if(mysql_num_rows($result)) {
@@ -4443,7 +4444,7 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 							$database->removeclimberrankpop($climber2['id'], $totalpoints);
 							$database->updateoldrank($climber2['id'], $oldrank);
 					}else{
-							$totalpoints = count($ranking->getRank()) - $oldrank;
+							$totalpoints = mysql_num_rows(mysql_query($users)) - $oldrank;
 							$database->setclimberrankpop($climber2['id'], $totalpoints);
 							$database->updateoldrank($climber2['id'], $oldrank);
 					}
@@ -4453,7 +4454,7 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 							$database->addclimberrankpop($climbers[$myrank]['id'], $totalpoints);
 							$database->updateoldrank($climbers[$myrank]['id'], $myrank);
 					}else{
-							$totalpoints = count($ranking->getRank()) - $myrank;
+							$totalpoints = mysql_num_rows(mysql_query($users)) - $myrank;
 							$database->setclimberrankpop($climbers[$myrank]['id'], $totalpoints);
 							$database->updateoldrank($climbers[$myrank]['id'], $myrank);
 					}
@@ -4467,7 +4468,7 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 							$database->addclimberrankpop($climber2['id'], $totalpoints);
 							$database->updateoldrank($climber2['id'], $oldrank);
 					}else{
-							$totalpoints = count($ranking->getRank()) - $oldrank;
+							$totalpoints = mysql_num_rows(mysql_query($users)) - $oldrank;
 							$database->setclimberrankpop($climber2['id'], $totalpoints);
 							$database->updateoldrank($climber2['id'], $oldrank);
 					}
@@ -4477,7 +4478,7 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 							$database->removeclimberrankpop($climbers[$myrank-1]['id'], $totalpoints);
 							$database->updateoldrank($climbers[$myrank-1]['id'], $myrank);
 					}else{
-							$totalpoints = count($ranking->getRank()) - $myrank;
+							$totalpoints = mysql_num_rows(mysql_query($users)) - $myrank;
 							$database->setclimberrankpop($climbers[$myrank-1]['id'], $totalpoints);
 							$database->updateoldrank($climbers[$myrank-1]['id'], $myrank);
 					}
@@ -4485,7 +4486,7 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 					}
 					$ranking->procARankArray();
 					$aid = $database->getUserField($uid,"alliance",0);
-					if(count($ranking->getRank()) > 0 && $aid != 0){
+					if(mysql_num_rows(mysql_query($users)) > 0 && $aid != 0){
 					$ally = $database->getAlliance($aid);
 					$memberlist = $database->getAllMember($ally['id']);
 					$oldrank = 0;

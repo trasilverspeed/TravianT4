@@ -1004,6 +1004,27 @@
         		return mysql_insert_id($this->connection);
         	}
 
+			function procAllyPop($aid) {
+				$ally = $this->getAlliance($aid);
+				$memberlist = $this->getAllMember($ally['id']);
+				$oldrank = 0;
+				foreach($memberlist as $member) {
+					$oldrank += $this->getVSumField($member['id'],"pop");
+				}
+				if($ally['oldrank'] != $oldrank){
+					if($ally['oldrank'] < $oldrank) {
+						$totalpoints = $oldrank - $ally['oldrank'];
+						$this->addclimberrankpopAlly($ally['id'], $totalpoints);
+						$this->updateoldrankAlly($ally['id'], $oldrank);
+					} else
+						if($ally['oldrank'] > $oldrank) {
+							$totalpoints = $ally['oldrank'] - $oldrank;
+							$this->removeclimberrankpopAlly($ally['id'], $totalpoints);
+							$this->updateoldrankAlly($ally['id'], $oldrank);
+						}
+				}
+			}
+
         	/*****************************************
         	Function to insert an alliance new
         	References: 
