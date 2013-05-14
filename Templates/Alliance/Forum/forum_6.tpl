@@ -27,6 +27,10 @@ if($displayarray['tribe'] == 1) {
     $trip = "Gauls";
 }
 $input = $arr['post'];
+$alliance = $arr['alliance0'];
+$player = $arr['player0'];
+$coor = $arr['coor0'];
+$report = $arr['report0'];
 $bbcoded = $input;
 include("GameEngine/BBCode.php");
 $bbcode_topic = stripslashes(nl2br($bbcoded));
