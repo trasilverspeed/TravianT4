@@ -4484,7 +4484,6 @@ $info_cata=" damaged from level <b>".$tblevel."</b> to level <b>".$totallvl."</b
 					}
 					}
 					}
-					$ranking->procARankArray();
 					$aid = $database->getUserField($uid,"alliance",0);
 					if(mysql_num_rows(mysql_query($users)) > 0 && $aid != 0){
 					$ally = $database->getAlliance($aid);
