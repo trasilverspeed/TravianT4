@@ -111,7 +111,7 @@ if($_GET['action']=='sell' && $_GET['abort']){
 $sql = mysql_query("SELECT * FROM ".TB_PREFIX."auction WHERE finish = 0 and owner = '".$session->uid."'");
 $query = mysql_num_rows($sql);
 if($_GET['action']=='sell' && $_POST['a']=='e45'){
-	if($query != 5){
+	if($query < 5){
 		$data = $database->getItemData($_POST['id']);
 		$database->addAuction($session->uid, $_POST['id'], $data['btype'], $data['type'], $_POST['amount']);
 	}

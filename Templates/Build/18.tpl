@@ -2,7 +2,7 @@
 <div id="build" class="gid18">
 <div class="build_desc">
 <a href="#" onClick="return Travian.Game.iPopup(18,4);" class="build_logo">
-	<img class="building big white g18" src="img/x.gif" alt="Követség" title="Követség" />
+	<img class="building big white g18" src="img/x.gif" alt="Embassy" title="Embassy" />
 </a>
 The embassy is the office for the diplomats. The higher the level, the more options are available to the king.</div>
 
@@ -29,7 +29,7 @@ echo "
 	</tr></tbody>
 	</table>";
     }
-    else {
+    else if($village->resarray['f'.$id] >= 1) {
     ?>
     <div class="clear"></div>
     <h4 class="round">Invites</h4>
